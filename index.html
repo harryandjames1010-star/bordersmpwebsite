@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Border SMP</title>
 
+<link rel="icon" href="https://api.powerupstack.net/cdn/instances/019e3a8b-cbfe-7c85-88c1-54cb9116d811/icon.png?v=14056678284652727b017bb54578441c214fcd1ba38d964c056cbba958420865">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+    color: white;
+    text-align: center;
+}
+
+/* HEADER */
+header {
+    padding: 30px;
+    border-bottom: 3px solid #00ff55;
+    background: #111;
+}
+
+.logo {
+    width: 140px;
+    border-radius: 16px;
+}
+
+h1 {
+    color: #00ff55;
+    margin: 10px 0 5px;
+}
+
+/* BOX */
+.box {
+    background: #1e1e1e;
+    width: 92%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 0 15px rgba(0,255,85,0.1);
+}
+
+/* IP */
+.ip {
+    font-size: 22px;
+    color: #00ff55;
+    font-weight: bold;
+}
+
+/* BUTTON */
+button {
+    background: #00aa00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00cc00;
+}
+
+/* COUNTDOWN */
+#countdown {
+    font-size: 28px;
+    color: gold;
+    font-weight: bold;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: #222;
+    border: 1px solid #00ff55;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: #00ff55;
+    color: black;
+}
+
+.tab {
+    display: none;
+    margin-top: 15px;
+}
+
+.tab.active {
+    display: block;
+}
+
+/* FEATURES LIST */
+ul {
+    text-align: left;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+/* RECIPES IMAGE */
+.recipes-img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    border: 2px solid #00ff55;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <img class="logo"
+    src="https://api.powerupstack.net/cdn/instances/019e3a8b-cbfe-7c85-88c1-54cb9116d811/icon.png?v=14056678284652727b017bb54578441c214fcd1ba38d964c056cbba958420865">
+
+    <h1>Border SMP</h1>
+    <p>Peaceful Survival SMP with Events</p>
+</header>
+
+<div class="box">
+    <h2>Server IP</h2>
+    <div class="ip">thebordersmp.progamer.me</div>
+    <p><b>Port:</b> 27791</p>
+    <br>
+    <button onclick="copyIP()">Copy IP</button>
+</div>
+
+<div class="box">
+    <h2>Server Launch Countdown</h2>
+    <div id="countdown">Loading...</div>
+</div>
+
+<div class="box">
+    <h2>Navigation</h2>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('info')">Info</button>
+        <button class="tab-btn" onclick="openTab('features')">Features</button>
+        <button class="tab-btn" onclick="openTab('recipes')">Recipes</button>
+    </div>
+
+    <!-- INFO TAB -->
+    <div id="info" class="tab active">
+        <ul>
+            <li>🌍 World Border: 750x750</li>
+            <li>⚔️ End closed until End Fight</li>
+            <li>🏠 Survival SMP</li>
+            <li>🤝 Trading & Community</li>
+            <li>🎯 Bounty Events</li>
+        </ul>
+    </div>
+
+    <!-- FEATURES TAB -->
+    <div id="features" class="tab">
+        <ul>
+            <li>🧪 Custom Recipes</li>
+            <li>🧵 String Duping Recipe</li>
+            <li>🎯 Bounties System</li>
+            <li>💀 Head Drops</li>
+            <li>👤 Mob Heads</li>
+            <li>💰 Unlimited Villager Trades</li>
+            <li>🎨 Custom Map Arts</li>
+            <li>🪣 Pick Up Villagers in Buckets</li>
+        </ul>
+    </div>
+
+    <!-- RECIPES TAB -->
+    <div id="recipes" class="tab">
+        <p>Custom Recipe Preview:</p>
+        <img class="recipes-img"
+        src="https://minecraft.wiki/images/Crafting_Table_JE4_BE3.png"
+        alt="Recipes Preview">
+    </div>
+</div>
+
+<script>
+function copyIP() {
+    navigator.clipboard.writeText("thebordersmp.progamer.me:27791");
+    alert("Server IP copied!");
+}
+
+function openTab(tabName) {
+    let tabs = document.querySelectorAll(".tab");
+    let buttons = document.querySelectorAll(".tab-btn");
+
+    tabs.forEach(t => t.classList.remove("active"));
+    buttons.forEach(b => b.classList.remove("active"));
+
+    document.getElementById(tabName).classList.add("active");
+    event.target.classList.add("active");
+}
+
+const launchDate = new Date("June 26, 2026 00:00:00").getTime();
+
+setInterval(function() {
+    const now = new Date().getTime();
+    const distance = launchDate - now;
+
+    if (distance < 0) {
+        document.getElementById("countdown").innerHTML =
+            "<span style='color:#00ff55'>🚀 Server Is Live!</span>";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24))
+        / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60))
+        / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60))
+        / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}, 1000);
+</script>
+
+</body>
+</html>
