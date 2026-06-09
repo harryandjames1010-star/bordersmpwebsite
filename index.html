@@ -4,231 +4,499 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Border SMP</title>
-
-<link rel="icon" href="https://api.powerupstack.net/cdn/instances/019e3a8b-cbfe-7c85-88c1-54cb9116d811/icon.png?v=14056678284652727b017bb54578441c214fcd1ba38d964c056cbba958420865">
-
+<link rel="icon" href="https://i.imgur.com/oMIEW3V.png">
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-    color: white;
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #00ff55;
+    --green-dim: #00cc44;
+    --green-glow: rgba(0, 255, 85, 0.12);
+    --green-glow-strong: rgba(0, 255, 85, 0.22);
+    --bg: #0b0b0b;
+    --surface: #111111;
+    --surface2: #181818;
+    --surface3: #1f1f1f;
+    --border: rgba(0,255,85,0.15);
+    --border-hover: rgba(0,255,85,0.35);
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --gold: #f0b429;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
     text-align: center;
-}
+    padding: 60px 20px 50px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
 
-/* HEADER */
-header {
-    padding: 30px;
-    border-bottom: 3px solid #00ff55;
-    background: #111;
-}
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
 
-.logo {
-    width: 140px;
+  .logo-wrap {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .logo {
+    width: 100px;
+    border-radius: 18px;
+    border: 2px solid rgba(0,255,85,0.3);
+    display: block;
+  }
+
+  .logo-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 26px;
+    border: 1px solid rgba(0,255,85,0.12);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(0,255,85,0.3);
+  }
+
+  .tagline {
+    margin-top: 8px;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
-}
+    padding: 28px 28px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
 
-h1 {
-    color: #00ff55;
-    margin: 10px 0 5px;
-}
+  .card:hover {
+    border-color: var(--border-hover);
+  }
 
-/* BOX */
-.box {
-    background: #1e1e1e;
-    width: 92%;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 0 15px rgba(0,255,85,0.1);
-}
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
 
-/* IP */
-.ip {
-    font-size: 22px;
-    color: #00ff55;
-    font-weight: bold;
-}
+  /* ── IP CARD ── */
+  .ip-display {
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.5px;
+    font-family: 'Courier New', monospace;
+    word-break: break-all;
+  }
 
-/* BUTTON */
-button {
-    background: #00aa00;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
+  .ip-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .port-badge {
+    background: var(--surface3);
+    border: 1px solid var(--border);
     border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .port-badge span {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .copy-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    padding: 9px 22px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
     cursor: pointer;
-}
+    letter-spacing: 0.5px;
+    transition: background 0.15s, transform 0.1s;
+  }
 
-button:hover {
-    background: #00cc00;
-}
+  .copy-btn:hover {
+    background: var(--green-glow);
+  }
 
-/* COUNTDOWN */
-#countdown {
-    font-size: 28px;
-    color: gold;
-    font-weight: bold;
-}
+  .copy-btn:active {
+    transform: scale(0.97);
+  }
 
-/* TABS */
-.tabs {
+  .copy-btn.copied {
+    color: #fff;
+    border-color: var(--green);
+    background: var(--green-glow-strong);
+  }
+
+  /* ── COUNTDOWN ── */
+  .countdown-grid {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
     flex-wrap: wrap;
-}
+    margin-top: 4px;
+  }
 
-.tab-btn {
-    background: #222;
-    border: 1px solid #00ff55;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
+  .cd-unit {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .cd-num {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+  }
+
+  .cd-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 5px;
+  }
+
+  .live-msg {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green);
+    padding: 10px 0;
+    letter-spacing: 1px;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 18px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     cursor: pointer;
-}
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+  }
 
-.tab-btn.active {
-    background: #00ff55;
-    color: black;
-}
+  .tab-btn:hover { color: var(--text); }
 
-.tab {
-    display: none;
-    margin-top: 15px;
-}
+  .tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
 
-.tab.active {
-    display: block;
-}
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
 
-/* FEATURES LIST */
-ul {
-    text-align: left;
-    display: inline-block;
-    font-size: 18px;
-    line-height: 1.8;
-}
+  /* ── INFO LIST ── */
+  .info-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
 
-/* RECIPES IMAGE */
-.recipes-img {
+  .info-list li {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .info-list li .icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── FEATURES LIST ── */
+  .features-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .features-list li {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .features-list li .icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── RECIPES ── */
+  .recipes-placeholder {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 50px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    background: var(--surface2);
+  }
+
+  .recipes-placeholder .icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+
+  .recipe-img {
     width: 100%;
     max-width: 600px;
     border-radius: 12px;
-    border: 2px solid #00ff55;
-}
+    border: 1px solid var(--border);
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 500px) {
+    .card { padding: 20px 16px; }
+    .cd-unit { min-width: 64px; padding: 12px 14px; }
+    .cd-num { font-size: 1.7rem; }
+    .copy-btn { width: 100%; margin-left: 0; margin-top: 10px; }
+    .ip-row { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
-
 <body>
 
 <header>
+  <div class="logo-wrap">
+    <div class="logo-ring"></div>
     <img class="logo"
-    src="https://api.powerupstack.net/cdn/instances/019e3a8b-cbfe-7c85-88c1-54cb9116d811/icon.png?v=14056678284652727b017bb54578441c214fcd1ba38d964c056cbba958420865">
-
-    <h1>Border SMP</h1>
-    <p>Peaceful Survival SMP with Events</p>
+      src="https://i.imgur.com/oMIEW3V.png"
+      alt="Border SMP logo">
+  </div>
+  <h1>Border SMP</h1>
+  <p class="tagline">Survival · Events · Community</p>
 </header>
 
-<div class="box">
-    <h2>Server IP</h2>
-    <div class="ip">thebordersmp.progamer.me</div>
-    <p><b>Port:</b> 27791</p>
-    <br>
-    <button onclick="copyIP()">Copy IP</button>
-</div>
+<main>
 
-<div class="box">
-    <h2>Server Launch Countdown</h2>
-    <div id="countdown">Loading...</div>
-</div>
+  <!-- SERVER IP -->
+  <div class="card">
+    <div class="card-label">Server IP</div>
+    <div class="ip-display">thebordersmp.progamer.me</div>
+    <div class="ip-row">
+      <div class="port-badge">Port: <span>27791</span></div>
+      <button class="copy-btn" id="copyBtn" onclick="copyIP()">Copy IP</button>
+    </div>
+  </div>
 
-<div class="box">
-    <h2>Navigation</h2>
+  <!-- COUNTDOWN -->
+  <div class="card">
+    <div class="card-label">Launch Countdown</div>
+    <div class="countdown-grid" id="countdown">
+      <div class="cd-unit"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Mins</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
+    </div>
+  </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('info')">Info</button>
-        <button class="tab-btn" onclick="openTab('features')">Features</button>
-        <button class="tab-btn" onclick="openTab('recipes')">Recipes</button>
+  <!-- TABS -->
+  <div class="card">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="openTab('info', this)">Info</button>
+      <button class="tab-btn" onclick="openTab('features', this)">Features</button>
+      <button class="tab-btn" onclick="openTab('recipes', this)">Recipes</button>
     </div>
 
-    <!-- INFO TAB -->
-    <div id="info" class="tab active">
-        <ul>
-            <li>🌍 World Border: 750x750</li>
-            <li>⚔️ End closed until End Fight</li>
-            <li>🏠 Survival SMP</li>
-            <li>🤝 Trading & Community</li>
-            <li>🎯 Bounty Events</li>
-        </ul>
+    <!-- INFO -->
+    <div id="info" class="tab-pane active">
+      <ul class="info-list">
+        <li><span class="icon">🌍</span> 750×750 World Border</li>
+        <li><span class="icon">⚔️</span> End locked until End Fight</li>
+        <li><span class="icon">🏠</span> Survival SMP</li>
+        <li><span class="icon">🤝</span> Trading & Community</li>
+        <li><span class="icon">🎯</span> Bounty Events</li>
+      </ul>
     </div>
 
-    <!-- FEATURES TAB -->
-    <div id="features" class="tab">
-        <ul>
-            <li>🧪 Custom Recipes</li>
-            <li>🧵 String Duping Recipe</li>
-            <li>🎯 Bounties System</li>
-            <li>💀 Head Drops</li>
-            <li>👤 Mob Heads</li>
-            <li>💰 Unlimited Villager Trades</li>
-            <li>🎨 Custom Map Arts</li>
-            <li>🪣 Pick Up Villagers in Buckets</li>
-        </ul>
+    <!-- FEATURES -->
+    <div id="features" class="tab-pane">
+      <ul class="features-list">
+        <li><span class="icon">🧪</span> Custom Recipes</li>
+        <li><span class="icon">🧵</span> String Duping Recipe</li>
+        <li><span class="icon">🎯</span> Bounties System</li>
+        <li><span class="icon">💀</span> Head Drops</li>
+        <li><span class="icon">👤</span> Mob Heads</li>
+        <li><span class="icon">💰</span> Unlimited Villager Trades</li>
+        <li><span class="icon">🎨</span> Custom Map Arts</li>
+        <li><span class="icon">🪣</span> Pick Up Villagers in Buckets</li>
+      </ul>
     </div>
 
-    <!-- RECIPES TAB -->
-    <div id="recipes" class="tab">
-        <p>Custom Recipe Preview:</p>
-        <img class="recipes-img"
-        src="https://minecraft.wiki/images/Crafting_Table_JE4_BE3.png"
-        alt="Recipes Preview">
+    <!-- RECIPES -->
+    <div id="recipes" class="tab-pane">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <img class="recipe-img" src="https://i.imgur.com/MO3sKt5.png" alt="Custom Recipes">
+        <img class="recipe-img" src="https://i.imgur.com/zg0eKdL.png" alt="Custom Recipes">
+      </div>
     </div>
-</div>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Border SMP · Harry Murphy
+</footer>
 
 <script>
 function copyIP() {
-    navigator.clipboard.writeText("thebordersmp.progamer.me:27791");
-    alert("Server IP copied!");
+  navigator.clipboard.writeText("thebordersmp.progamer.me:27791");
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = '✓ Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = 'Copy IP';
+    btn.classList.remove('copied');
+  }, 2000);
 }
 
-function openTab(tabName) {
-    let tabs = document.querySelectorAll(".tab");
-    let buttons = document.querySelectorAll(".tab-btn");
-
-    tabs.forEach(t => t.classList.remove("active"));
-    buttons.forEach(b => b.classList.remove("active"));
-
-    document.getElementById(tabName).classList.add("active");
-    event.target.classList.add("active");
+function openTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  btn.classList.add('active');
 }
 
-const launchDate = new Date("June 26, 2026 00:00:00").getTime();
+const launchDate = new Date("July 3, 2026 00:00:00").getTime();
 
-setInterval(function() {
-    const now = new Date().getTime();
-    const distance = launchDate - now;
+function pad(n) { return String(n).padStart(2, '0'); }
 
-    if (distance < 0) {
-        document.getElementById("countdown").innerHTML =
-            "<span style='color:#00ff55'>🚀 Server Is Live!</span>";
-        return;
-    }
+function tick() {
+  const dist = launchDate - Date.now();
+  if (dist <= 0) {
+    document.getElementById('countdown').innerHTML =
+      '<div class="live-msg">🚀 Server Is Live!</div>';
+    return;
+  }
+  document.getElementById('cd-days').textContent  = Math.floor(dist / 86400000);
+  document.getElementById('cd-hours').textContent = pad(Math.floor((dist % 86400000) / 3600000));
+  document.getElementById('cd-mins').textContent  = pad(Math.floor((dist % 3600000) / 60000));
+  document.getElementById('cd-secs').textContent  = pad(Math.floor((dist % 60000) / 1000));
+}
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24))
-        / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60))
-        / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60))
-        / 1000);
-
-    document.getElementById("countdown").innerHTML =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}, 1000);
+tick();
+setInterval(tick, 1000);
 </script>
 
 </body>
